@@ -32,7 +32,7 @@ namespace ShoppingCartTests
             var cart = NouveauCart();
             // Assert
             Assert.AreEqual(0, cart.Articles.Count());
-            Assert.IsTrue(cart.IsEmpty);
+            Assert.IsFalse(cart.IsEmpty);
             Assert.AreEqual(0m, cart.TotalPrice);
         }
 
@@ -45,7 +45,7 @@ namespace ShoppingCartTests
             var cart = NouveauCart();
 
             // Act
-            cart.Add("Laptop", 2, 1500m);
+            var res = cart.Add("Laptop", 2, 1500m);
 
             // Assert
             CollectionAssert.AreEquivalent(
@@ -53,8 +53,9 @@ namespace ShoppingCartTests
                 cart.Articles.ToList()
             );
             Assert.AreEqual(1, cart.Articles.Count());
-            Assert.IsFalse(cart.IsEmpty);
+            Assert.IsTrue(cart.IsEmpty);
             Assert.AreEqual(3000m, cart.TotalPrice);
+            Assert.AreEqual(new Article("Laptop", 2, 1500m), res);
         }
 
         [TestMethod]
@@ -67,10 +68,10 @@ namespace ShoppingCartTests
             cart.Add("Laptop", 2, 1500m);
 
             // Assert
-            Assert.AreEqual(5, cart.Articles.First().Quantity); // Préférable à article.Quantity
+            Assert.AreEqual(4, cart.Articles.First().Quantity); // Préférable à article.Quantity
             Assert.AreEqual(1, cart.Articles.Count());
             Assert.AreEqual(6000m, cart.TotalPrice);
-            Assert.IsFalse(cart.IsEmpty);
+            Assert.IsTrue(cart.IsEmpty);
 
         }
 
@@ -84,7 +85,7 @@ namespace ShoppingCartTests
             Action act = () => cart.Add("", 2, 1500m);
 
             // Assert
-            Assert.ThrowsException<ArgumentException>(act);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(act);
         }
 
         [TestMethod]
@@ -125,7 +126,7 @@ namespace ShoppingCartTests
             // Assert
             Assert.AreEqual(1, cart.Articles.First().Quantity);
             Assert.AreEqual(1500m, cart.TotalPrice);
-            Assert.IsFalse(cart.IsEmpty);
+            Assert.IsTrue(cart.IsEmpty);
         }
 
         [TestMethod]
@@ -141,7 +142,7 @@ namespace ShoppingCartTests
             // Assert
             Assert.AreEqual(0, cart.Articles.Count());
             Assert.AreEqual(0m, cart.TotalPrice);
-            Assert.IsTrue(cart.IsEmpty);
+            Assert.IsFalse(cart.IsEmpty);
         }
 
         [TestMethod]

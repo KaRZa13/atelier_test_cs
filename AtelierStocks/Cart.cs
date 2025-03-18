@@ -33,6 +33,10 @@ namespace ShoppingCart
         /// <exception cref="System.ArgumentOutOfRangeException">If the quantity or price are negative or zero.</exception>
         public Article Add(string productName, int qty, decimal price)
         {
+            if (productName == "")
+            {
+                throw new System.ArgumentOutOfRangeException("Product name cannot be null or empty");
+            }
             if (articles.ContainsKey(productName))
             {
                 var article = articles[productName];
